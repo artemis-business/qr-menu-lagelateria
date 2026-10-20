@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- TARAYICI İNADI KIRICI KODLAR (Önbelleği zorla temizler) -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache"> 
     <meta http-equiv="Expires" content="0">
     <title>La Gelateria</title>
-    <!-- SEKME İKONU (FAVICON) -->
     <link rel="icon" href="https://github.com/aliefegnd/qr-menu/blob/main/Gemini_Generated_Image_22coua22coua22co.jpg?raw=true" type="image/jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -22,10 +19,7 @@
         .top-bar .spacer { width: 30px; } 
 
         .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; padding-bottom: 100px; }
-        .cat-box {
-            aspect-ratio: 1; border-radius: 12px; position: relative; overflow: hidden;
-            background-size: cover; background-position: center; background-color: #eee; cursor: pointer;
-        }
+        .cat-box { aspect-ratio: 1; border-radius: 12px; position: relative; overflow: hidden; background-size: cover; background-position: center; background-color: #eee; cursor: pointer; }
         .cat-gradient { position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); }
         .cat-title { position: absolute; bottom: 12px; left: 12px; color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase; z-index: 2; }
 
@@ -34,6 +28,7 @@
         .fab-menu.active { display: flex; }
         .fab-menu-item { padding: 12px 20px; font-size: 14px; color: #333; text-align: left; border-bottom: 1px solid #f5f5f5; }
         .fab-menu-item:last-child { border-bottom: none; }
+        .fab-menu-item a { color: inherit; text-decoration: none; }
         
         .fab-btn { width: 55px; height: 55px; border-radius: 50%; background-color: #e31837; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(227, 24, 55, 0.4); border: 2px solid white; }
         .fab-btn div { width: 22px; height: 3px; background: white; margin: 4px 0; border-radius: 2px; }
@@ -45,6 +40,7 @@
         
         .product-item { display: flex; gap: 15px; padding: 15px; border-bottom: 1px solid #f5f5f5; }
         .p-img { width: 90px; height: 90px; border-radius: 8px; object-fit: cover; }
+        .p-img-placeholder { width: 90px; height: 90px; border-radius: 8px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #ccc; flex-shrink: 0; }
         .p-info { flex: 1; }
         .p-name { font-weight: 700; font-size: 15px; margin:0 0 5px 0; color: #333; }
         .p-desc { font-size: 12px; color: #888; margin: 0 0 10px 0; }
@@ -52,45 +48,14 @@
 
         #loading { text-align: center; padding: 50px; font-weight: bold; }
         
-        /* ÖZEL MİNİMALİST BEJ LOGO HEADER BÖLÜMÜ */
-        .cafe-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 25px 20px;
-            background-color: #e2c4b3; /* Logonun kendi bej/krem arka plan rengiyle birebir uyumlu */
-            border-bottom: 3px solid #2b221f; /* Logonun yazı renginde zarif alt çizgi */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        .logo-wrapper {
-            max-width: 320px;
-            width: 90%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.25); /* Logoyu öne çıkaran yumuşak transparan çerçeve */
-            border-radius: 12px;
-            border: 1px solid rgba(43, 34, 31, 0.15);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
-        }
-
-        .cafe-logo {
-            width: 100%;
-            height: auto;
-            max-height: 90px;
-            object-fit: contain;
-            border-radius: 6px;
-            display: block;
-        }
+        .cafe-header { display: flex; align-items: center; justify-content: center; padding: 25px 20px; background-color: #e2c4b3; border-bottom: 3px solid #2b221f; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); }
+        .logo-wrapper { max-width: 320px; width: 90%; display: flex; justify-content: center; align-items: center; padding: 8px 12px; background: rgba(255, 255, 255, 0.25); border-radius: 12px; border: 1px solid rgba(43, 34, 31, 0.15); box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03); }
+        .cafe-logo { width: 100%; height: auto; max-height: 90px; object-fit: contain; border-radius: 6px; display: block; }
     </style>
 </head>
 <body>
-    <!-- YENİ MİNİMALİST VE ÖZEL TASARIM HEADER -->
     <div class="cafe-header">
         <div class="logo-wrapper">
-            <!-- GitHub'a yükleyeceğiniz logonun Raw bağlantısı -->
             <img src="https://raw.githubusercontent.com/artemis-business/qr-menu-lagelateria/main/logo.jpg" alt="LA GELATERIA" class="cafe-logo">
         </div>
     </div>
@@ -112,9 +77,7 @@
         </div>
         <div class="fab-btn" onclick="toggleFab()">
             <div>
-                <div></div>
-                <div></div>
-                <div></div>
+                <div></div><div></div><div></div>
             </div>
         </div>
     </div>
@@ -145,9 +108,11 @@
                     veri.kategoriler.forEach(kat => {
                         window.kategorilenmisUrunler[kat.isim] = []; 
                         let imgUrl = kat.foto_base64 || ''; 
+                        // PRO Koruma: JavaScript syntax hatası vermemesi için ismi encode ediyoruz.
+                        let encodedKatIsim = encodeURIComponent(kat.isim);
                         
                         grid.innerHTML += `
-                            <div class="cat-box" style="background-image: url('${imgUrl}');" onclick="openModal('${kat.isim}')">
+                            <div class="cat-box" style="background-image: url('${imgUrl}');" onclick="openModal('${encodedKatIsim}')">
                                 <div class="cat-gradient"></div>
                                 <div class="cat-title">${kat.isim}</div>
                             </div>
@@ -168,7 +133,7 @@
 
                     if (window.kategorilenmisUrunler["Diğer"].length > 0) {
                         grid.innerHTML += `
-                            <div class="cat-box" style="background-color: #333;" onclick="openModal('Diğer')">
+                            <div class="cat-box" style="background-color: #333;" onclick="openModal('${encodeURIComponent('Diğer')}')">
                                 <div class="cat-gradient"></div>
                                 <div class="cat-title">DİĞER ÜRÜNLER</div>
                             </div>
@@ -180,7 +145,8 @@
             }
         }
 
-        function openModal(kategoriAdi) {
+        function openModal(encodedKategoriAdi) {
+            const kategoriAdi = decodeURIComponent(encodedKategoriAdi);
             document.getElementById('modal-title').innerText = kategoriAdi;
             const content = document.getElementById('modal-content');
             content.innerHTML = ""; 
@@ -188,12 +154,16 @@
             const urunler = window.kategorilenmisUrunler[kategoriAdi] || [];
             
             urunler.forEach(urun => {
+                let imgHtml = urun.foto_base64 
+                    ? `<img src="${urun.foto_base64}" class="p-img" alt="${urun.isim}">` 
+                    : `<div class="p-img-placeholder">☕</div>`;
+
                 content.innerHTML += `
                     <div class="product-item">
-                        <img src="${urun.foto_base64}" class="p-img">
+                        ${imgHtml}
                         <div class="p-info">
                             <h3 class="p-name">${urun.isim}</h3>
-                            <p class="p-desc">${urun.aciklama}</p>
+                            <p class="p-desc">${urun.aciklama || ''}</p>
                             <p class="p-price">${urun.fiyat} ₺</p>
                         </div>
                     </div>
