@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- TARAYICI İNADI KIRICI KODLAR (Önbelleği zorla temizler) -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache"> 
+    <meta http-equiv="Expires" content="0">
+    <title>La Gelateria</title>
+    <!-- SEKME İKONU (FAVICON) -->
+    <link rel="icon" href="https://github.com/aliefegnd/qr-menu/blob/main/Gemini_Generated_Image_22coua22coua22co.jpg?raw=true" type="image/jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'Roboto', sans-serif; background-color: #ffffff; }
+        * { box-sizing: border-box; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #eee; }
+        .top-bar .lang { font-weight: bold; font-size: 14px; }
+        .top-bar .brand { font-weight: 900; font-size: 18px; }
+        .top-bar .spacer { width: 30px; } 
+
+        .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; padding-bottom: 100px; }
+        .cat-box {
+            aspect-ratio: 1; border-radius: 12px; position: relative; overflow: hidden;
+            background-size: cover; background-position: center; background-color: #eee; cursor: pointer;
+        }
+        .cat-gradient { position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); }
+        .cat-title { position: absolute; bottom: 12px; left: 12px; color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase; z-index: 2; }
+
+        .fab-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; }
+        .fab-menu { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); padding: 10px 0; margin-bottom: 15px; display: none; flex-direction: column; min-width: 200px; }
+        .fab-menu.active { display: flex; }
+        .fab-menu-item { padding: 12px 20px; font-size: 14px; color: #333; text-align: left; border-bottom: 1px solid #f5f5f5; }
+        .fab-menu-item:last-child { border-bottom: none; }
+        
+        .fab-btn { width: 55px; height: 55px; border-radius: 50%; background-color: #e31837; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(227, 24, 55, 0.4); border: 2px solid white; }
+        .fab-btn div { width: 22px; height: 3px; background: white; margin: 4px 0; border-radius: 2px; }
+
+        #category-modal { position: fixed; inset: 0; background: #fff; z-index: 10000; transform: translateY(100%); transition: transform 0.3s ease; overflow-y: auto; }
+        #category-modal.active { transform: translateY(0); }
+        .modal-header { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; position: sticky; top: 0; background: white; z-index: 10; }
+        .back-btn { background: none; border: none; font-size: 16px; font-weight: bold; color: #e31837; cursor: pointer; }
+        
+        .product-item { display: flex; gap: 15px; padding: 15px; border-bottom: 1px solid #f5f5f5; }
+        .p-img { width: 90px; height: 90px; border-radius: 8px; object-fit: cover; }
+        .p-info { flex: 1; }
+        .p-name { font-weight: 700; font-size: 15px; margin:0 0 5px 0; color: #333; }
+        .p-desc { font-size: 12px; color: #888; margin: 0 0 10px 0; }
+        .p-price { font-weight: 700; color: #e31837; font-size: 16px; margin:0; }
+
+        #loading { text-align: center; padding: 50px; font-weight: bold; }
+        
+        /* ÖZEL MİNİMALİST BEJ LOGO HEADER BÖLÜMÜ */
+        .cafe-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 20px;
+            background-color: #e2c4b3; /* Logonun kendi bej/krem arka plan rengiyle birebir uyumlu */
+            border-bottom: 3px solid #2b221f; /* Logonun yazı renginde zarif alt çizgi */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo-wrapper {
+            max-width: 320px;
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.25); /* Logoyu öne çıkaran yumuşak transparan çerçeve */
+            border-radius: 12px;
+            border: 1px solid rgba(43, 34, 31, 0.15);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .cafe-logo {
+            width: 100%;
+            height: auto;
+            max-height: 90px;
+            object-fit: contain;
+            border-radius: 6px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- YENİ MİNİMALİST VE ÖZEL TASARIM HEADER -->
+    <div class="cafe-header">
+        <div class="logo-wrapper">
+            <!-- GitHub'a yükleyeceğiniz logonun Raw bağlantısı -->
+            <img src="https://github.com/aliefegnd/qr-menu/blob/main/logo.jpg?raw=true" alt="LA GELATERIA" class="cafe-logo">
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <div class="lang">TR ⌄</div>
+        <div class="brand">MENÜ</div>
+        <div class="spacer"></div>
+    </div>
+
+    <div id="loading">Menü Yükleniyor...</div>
+    <div class="category-grid" id="category-grid"></div>
+
+    <div class="fab-container">
+        <div class="fab-menu" id="fab-menu">
+            <div class="fab-menu-item" style="font-weight: bold; color: #e31837;">Bize Ulaşın</div>
+            <div class="fab-menu-item">📞 0507 863 78 68</div>
+            <div class="fab-menu-item"><a href="https://instagram.com/lagelateria_store?psln=MTRrazAwcnE3YnZsaA%3D%3D" target="_blank">Instagram'da Takip Edin</a></div>
+        </div>
+        <div class="fab-btn" onclick="toggleFab()">
+            <div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="category-modal">
+        <div class="modal-header">
+            <h2 id="modal-title" style="margin:0; font-size:18px;">Kategori</h2>
+            <button class="back-btn" onclick="closeModal()">Kapat</button>
+        </div>
+        <div id="modal-content"></div>
+    </div>
+
+    <script>
+        window.kategorilenmisUrunler = {};
+
+        async function menuyuGetir() {
+            try {
+                const zamanDamgasi = new Date().getTime();
+                const response = await fetch('/api/menu?t=' + zamanDamgasi, { cache: "no-store" });
+                const veri = await response.json();
+                
+                if (veri.status === "success") {
+                    document.getElementById('loading').style.display = 'none';
+                    const grid = document.getElementById('category-grid');
+                    grid.innerHTML = "";
+                    window.kategorilenmisUrunler = {};
+                    
+                    veri.kategoriler.forEach(kat => {
+                        window.kategorilenmisUrunler[kat.isim] = []; 
+                        let imgUrl = kat.foto_base64 || ''; 
+                        
+                        grid.innerHTML += `
+                            <div class="cat-box" style="background-image: url('${imgUrl}');" onclick="openModal('${kat.isim}')">
+                                <div class="cat-gradient"></div>
+                                <div class="cat-title">${kat.isim}</div>
+                            </div>
+                        `;
+                    });
+
+                    if (!window.kategorilenmisUrunler["Diğer"]) {
+                        window.kategorilenmisUrunler["Diğer"] = [];
+                    }
+
+                    veri.urunler.forEach(urun => {
+                        if (window.kategorilenmisUrunler[urun.kategori]) {
+                            window.kategorilenmisUrunler[urun.kategori].push(urun);
+                        } else {
+                            window.kategorilenmisUrunler["Diğer"].push(urun);
+                        }
+                    });
+
+                    if (window.kategorilenmisUrunler["Diğer"].length > 0) {
+                        grid.innerHTML += `
+                            <div class="cat-box" style="background-color: #333;" onclick="openModal('Diğer')">
+                                <div class="cat-gradient"></div>
+                                <div class="cat-title">DİĞER ÜRÜNLER</div>
+                            </div>
+                        `;
+                    }
+                }
+            } catch (error) {
+                document.getElementById('loading').innerHTML = "Bağlantı hatası!";
+            }
+        }
+
+        function openModal(kategoriAdi) {
+            document.getElementById('modal-title').innerText = kategoriAdi;
+            const content = document.getElementById('modal-content');
+            content.innerHTML = ""; 
+
+            const urunler = window.kategorilenmisUrunler[kategoriAdi] || [];
+            
+            urunler.forEach(urun => {
+                content.innerHTML += `
+                    <div class="product-item">
+                        <img src="${urun.foto_base64}" class="p-img">
+                        <div class="p-info">
+                            <h3 class="p-name">${urun.isim}</h3>
+                            <p class="p-desc">${urun.aciklama}</p>
+                            <p class="p-price">${urun.fiyat} ₺</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('category-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('category-modal').classList.remove('active');
+        }
+
+        function toggleFab() {
+            document.getElementById('fab-menu').classList.toggle('active');
+        }
+
+        menuyuGetir();
+    </script>
+</body>
+</html>
